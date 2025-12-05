@@ -1,6 +1,7 @@
 # Custom
 
 .editorconfig
+syncz_vars.yml
 venv/
 
 # Byte-compiled / optimized / DLL files

@@ -1,0 +1,30 @@
+---
+
+host: ((.remote_host))
+user: ((.ssh_user))
+keyfile: ((.ssh_keyfile))
+
+sync:
+  - id: src
+    remote: ((.remote_home))/tbrocks
+    remoteencoding: ISO8859-1
+    ignore:
+      - "*"
+      - "!pyproject.toml"
+      - "!README.md"
+      - "!/src/"
+      - "!/tests/"
+      - "!tox.ini"
+      - "*/**/README.md"
+      - "*__pycache__*"
+
+tasks:
+  - name: setup-remote
+    actions:
+      - remotecmd: |
+          rm -fr ((.remote_home))/tbrocks && \
+          mkdir -p ((.remote_home))/tbrocks
+      - localcmd: |
+          syncz --id-match "src" \
+          --ignore-host-key-check \
+          --no-back-sync
