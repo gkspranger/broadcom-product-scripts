@@ -61,3 +61,10 @@ tasks:
           --ignore-host-key-check \
           -a "src::export PIP_FIND_LINKS=((.remote_pypi)) && ./ci.sh build \&> build-out/build.log"
           cat build-out/build.log
+
+  - name: test
+    actions:
+      - localcmd: |
+          syncz --id-match "ci|src" \
+          --ignore-host-key-check \
+          --no-back-sync --watch

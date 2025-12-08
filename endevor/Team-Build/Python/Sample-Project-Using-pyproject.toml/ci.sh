@@ -74,12 +74,44 @@ publish() {
   pax -wz -x pax -f ../artifact.pax.Z ./
 }
 
+protect() {
+  for i in $(find build-out/artifact/bin -type f); do
+    cat <<EOF > $i.wrapped
+#!/usr/bin/env bash
+PYTHONHOME="/usr/lpp/IBM/cyp/$__FORMATTED_VERSION/pyz"
+export PATH="\$PYTHONHOME/bin:\$PATH"
+export LIBPATH="\$PYTHONHOME/lib:\$LIBPATH"
+
+export _BPXK_AUTOCVT="ON"
+export _CEE_RUNOPTS="FILETAG(AUTOCVT,AUTOTAG) POSIX(ON)"
+export _TAG_REDIR_IN="txt"
+export _TAG_REDIR_OUT="txt"
+export _TAG_REDIR_ERR="txt"
+
+unset PYTHONUSERBASE
+
+export __SCRIPT_DIR="\$(cd \$(dirname \$0); echo \$PWD)"
+export PYTHONPATH="\$(dirname \$__SCRIPT_DIR)"
+
+export __SCRIPT_NAME="\$(basename \$0)"
+export __SCRIPT_ORIG="\$(echo \$__SCRIPT_NAME | sed 's/\.wrapped$//')"
+
+exec python \$__SCRIPT_DIR/\$__SCRIPT_ORIG "\$@"
+EOF
+    chmod 755 $i
+  done
+}
+
 case "$1" in
   build)
     setup
     build
     test
     publish
+    protect
+    ;;
+  protect)
+    protect
     ;;
   *)
     echo "Unknown command: $1"
