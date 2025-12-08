@@ -43,14 +43,27 @@ export PIP_NO_INDEX=1
 # only install wheel files
 export PIP_ONLY_BINARY=":all:"
 
+# generic header
+header() {
+  echo """
+##############################
+## $1
+##############################
+"""
+}
+
 # setup environment for developing/building
 setup() {
+  header "setup project"
+
   # install project dependencies
   $__PYTHON_BINARY -m pip install -e .[test]
 }
 
 # build artifacts
 build() {
+  header "build project"
+
   # install build dependencies
   $__PYTHON_BINARY -m pip install build
 
@@ -60,21 +73,33 @@ build() {
 
 # test code
 test() {
+  header "test project"
+
   # execute test runner
   $__PYTHON_BINARY -m tox
 }
 
-# assemble and publish artifacts
-publish() {
+# install wheel distribution
+install() {
+  header "install project"
+
   # install all to target directory
   $__PYTHON_BINARY -m pip install dist/*.whl -t build-out/artifact
+}
+
+# assemble and publish artifacts
+publish() {
+  header "publish project"
 
   # create artifact to be published
   cd build-out/artifact
   pax -wz -x pax -f ../artifact.pax.Z ./
 }
 
+# create protective wrapper script for every [project.script]
 protect() {
+  header "protect project"
+
   for i in $(find build-out/artifact/bin -type f); do
     cat <<EOF > $i.wrapped
 #!/usr/bin/env bash
@@ -98,7 +123,7 @@ export __SCRIPT_ORIG="\$(echo \$__SCRIPT_NAME | sed 's/\.wrapped$//')"
 
 exec python \$__SCRIPT_DIR/\$__SCRIPT_ORIG "\$@"
 EOF
-    chmod 755 $i
+    chmod 755 $i.wrapped
   done
 }
 
@@ -107,11 +132,9 @@ case "$1" in
     setup
     build
     test
+    install
+    protect
     publish
-    protect
-    ;;
-  protect)
-    protect
     ;;
   *)
     echo "Unknown command: $1"

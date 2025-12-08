@@ -16,6 +16,8 @@
 
   - Protection from host evolution
 
+  - Nothing to install on the mainframe! Get started today!
+
 ### `pyproject.toml`
 
 https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
