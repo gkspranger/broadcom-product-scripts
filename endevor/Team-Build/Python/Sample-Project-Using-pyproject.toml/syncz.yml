@@ -5,6 +5,13 @@ user: ((.ssh_user))
 keyfile: ((.ssh_keyfile))
 
 sync:
+  - id: ci
+    remote: ((.remote_home))/tbrocks
+    ignore:
+      - "*"
+      - "!ci.sh"
+      - "!.python-version"
+
   - id: src
     remote: ((.remote_home))/tbrocks
     remoteencoding: ISO8859-1
@@ -18,13 +25,37 @@ sync:
       - "*/**/README.md"
       - "*__pycache__*"
 
+backsync:
+  - id: ci
+    local: build-out
+    remote: ((.remote_home))/tbrocks/build-out
+    binfiles:
+      - "*.pax.Z"
+    ignore:
+      - "*"
+      - "!build.log"
+      - "!setup.log"
+      - "!*.pax.Z"
+
 tasks:
-  - name: setup-remote
+  - name: setup
     actions:
       - remotecmd: |
-          rm -fr ((.remote_home))/tbrocks && \
-          mkdir -p ((.remote_home))/tbrocks
+          rm -fr ((.remote_home))/tbrocks
+          mkdir -p ((.remote_home))/tbrocks/build-out
       - localcmd: |
-          syncz --id-match "src" \
+          syncz --id-match "ci|src" \
           --ignore-host-key-check \
-          --no-back-sync
+          -a "src::export PIP_FIND_LINKS=((.remote_pypi)) && ./ci.sh setup \&> build-out/setup.log"
+          cat build-out/setup.log
+
+  - name: build
+    actions:
+      - remotecmd: |
+          rm -fr ((.remote_home))/tbrocks
+          mkdir -p ((.remote_home))/tbrocks/build-out/artifact
+      - localcmd: |
+          syncz --id-match "ci|src" \
+          --ignore-host-key-check \
+          -a "src::export PIP_FIND_LINKS=((.remote_pypi)) && ./ci.sh build \&> build-out/build.log"
+          cat build-out/build.log
