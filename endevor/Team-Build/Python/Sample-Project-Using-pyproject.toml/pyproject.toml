@@ -1,18 +1,18 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling"]            # chosen build tool
 build-backend = "hatchling.build"
 
 [project]
-name = "tbrocks"
+name = "tbrocks"      # name of project/module
 version = "0.0.1"
 dependencies = [
-  "click>=8.0,<9.0",
+  "click>=8.0,<9.0",  # project dependency
 ]
-requires-python = ">=3.12,<3.13"
+requires-python = ">=3.12,<3.13"  # will install on Python 3.12
 authors = [
   {name = "Greg Spranger", email = "greg.spranger@broadcom.com"},
 ]
-description = "Example Python project, managed by Team Build."
+description = "Sample Python project, managed by Team Build."
 readme = "README.md"
 keywords = [
   "Team Build",
@@ -25,13 +25,16 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
+# test dependencies
 test = [
   "pytest>=9.0,<10.0",
   "tox>=4.0,<5.0",
 ]
 
 [project.scripts]
+# primary executable module/function
 tbrocks = "tbrocks.__main__:main"
 
 [tool.hatch.build.targets.wheel]
+# what to include in the built wheel distribution
 packages = ["src/tbrocks"]

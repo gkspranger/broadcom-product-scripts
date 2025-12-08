@@ -1,59 +1,61 @@
 ---
 
-host: ((.remote_host))
-user: ((.ssh_user))
-keyfile: ((.ssh_keyfile))
+# reassign variables set by syncz_vars.yml
+host: ((.remote_host))      # required
+user: ((.ssh_user))         # required
+keyfile: ((.ssh_keyfile))   # required
 
+# configs of files to sync from workstation to mainframe
 sync:
+  # ID of project files requiring ISO8859-1 to IBM-1047 conversion
   - id: ci
     remote: ((.remote_home))/tbrocks
     ignore:
-      - "*"
-      - "!ci.sh"
-      - "!.python-version"
+      - "*"                 # ignore everything
+      - "!ci.sh"            # allow CI script
+      - "!.python-version"  # allow Python version declaration
 
+  # ID of project files requiring ISO8859-1 preservation
   - id: src
     remote: ((.remote_home))/tbrocks
     remoteencoding: ISO8859-1
     ignore:
-      - "*"
-      - "!pyproject.toml"
-      - "!README.md"
-      - "!/src/"
-      - "!/tests/"
-      - "!tox.ini"
-      - "*/**/README.md"
-      - "*__pycache__*"
+      - "*"                 # ignore everything
+      - "!pyproject.toml"   # allow project configuration file
+      - "!README.md"        # allow primary doc
+      - "!/src/"            # allow source code
+      - "!/tests/"          # allow test code
+      - "!tox.ini"          # allow test environment configuration file
+      - "*/**/README.md"    # ignore sub docs
+      - "*__pycache__*"     # ignore Python caching
 
+# configs of files to sync from mainframe to workstation
 backsync:
+  # ID of project files to retrieve
   - id: ci
-    local: build-out
-    remote: ((.remote_home))/tbrocks/build-out
+    local: build-out  # local directory to write to
+    remote: ((.remote_home))/tbrocks/build-out  # remote directory to evaluate for retrieval
     binfiles:
-      - "*.pax.Z"
+      - "*.pax.Z"   # preserve remote encoding
     ignore:
-      - "*"
-      - "!build.log"
-      - "!setup.log"
-      - "!*.pax.Z"
+      - "*"         # ignore everything
+      - "!*.log"    # retrieve and convert (IBM-1047 to ISO8859-1) logs
+      - "!*.pax.Z"  # retrieve Pax artifacts
 
+# configs of combined actions (local and remote) to execute
 tasks:
-  - name: setup
-    actions:
-      - remotecmd: |
-          rm -fr ((.remote_home))/tbrocks
-          mkdir -p ((.remote_home))/tbrocks/build-out
-      - localcmd: |
-          syncz --id-match "ci|src" \
-          --ignore-host-key-check \
-          -a "src::export PIP_FIND_LINKS=((.remote_pypi)) && ./ci.sh setup \&> build-out/setup.log"
-          cat build-out/setup.log
-
+  # ID of build actions
   - name: build
     actions:
+      # cleanup remote working directory before building artifact
       - remotecmd: |
           rm -fr ((.remote_home))/tbrocks
           mkdir -p ((.remote_home))/tbrocks/build-out/artifact
+      # 1) syncz CI and SRC files (workstation to mainframe)
+      # 2) set remote environment variable PIP_FIND_LINKS to known location of
+      #    available Python packages
+      # 3) execute build script
+      # 4) retrieve and output CI results (*.log, *.pax.Z)
       - localcmd: |
           syncz --id-match "ci|src" \
           --ignore-host-key-check \

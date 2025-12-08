@@ -75,9 +75,6 @@ publish() {
 }
 
 case "$1" in
-  setup)
-    setup
-    ;;
   build)
     setup
     build
@@ -86,7 +83,7 @@ case "$1" in
     ;;
   *)
     echo "Unknown command: $1"
-    echo "Available commands: setup, build"
+    echo "Available commands: build"
     exit 1
     ;;
 esac
