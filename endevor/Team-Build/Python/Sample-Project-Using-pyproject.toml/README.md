@@ -16,7 +16,7 @@
 
   - Protection from host evolution
 
-  - Nothing to install on the mainframe! Get started today!
+  - Nothing to install manually on the mainframe! Get started today!
 
 ### `pyproject.toml`
 
@@ -48,7 +48,7 @@ https://techdocs.broadcom.com/us/en/ca-mainframe-software/devops/endevor-team-bu
 
   - Issue remote shell commands, including remote build initiation after synchronization is completed
 
-  - Nothing required to install on the mainframe!
+  - Nothing required to install manually on the mainframe!
 
 ### Sample Project Details
 
@@ -80,9 +80,11 @@ tox.ini                 # test environment config
 
   - If we zoom out and think about the big picture, every mainframe Python project is essentially a CLI (executed from USS), whether or not we develop it as such
 
-  - Knowing this, it is a good idea to develop Python projects as such, using libraries and workflows that support this idea
+  - Knowing this, it is a good idea to develop Python projects using libraries and workflows that support this idea
 
-- Uses the `click` library
+  - Need help on how to develop an effective CLI? We strongly recommend reading the [Command Line Interface Guidelines](https://clig.dev/)
+
+- Uses the `click` library for CLI development
 
   - https://click.palletsprojects.com/en/stable/
 
@@ -108,6 +110,18 @@ $ tbrocks.wrapped add67 123
 190
 ```
 
+- Uses `tox` for test environment management
+
+  - https://tox.wiki/en/latest/user_guide.html
+
+  "...use it to define how to setup and execute various tools on your projects"
+
+- Uses `pytest` for unit testing custom code
+
+  - https://docs.pytest.org/en/stable/
+
+  "...makes it easy to write small, readable tests, and can scale to support complex functional testing for applications and libraries"
+
 #### Dependencies
 
 - Remember, the artifact is created on the mainframe, which means it needs access to either a supported PyPi index (most likely internal to the enterprise) OR some USS location that stores all required wheel files
@@ -126,7 +140,7 @@ $ tbrocks.wrapped add67 123
 
 - **Workstation:** any machine (local, CI "runner", etc.) used during development
 
-- **Mainframe:** any LPAR developed against
+- **Mainframe:** any LPAR developed against; should mirror LPARs that will be deployed to
 
 - Task execution can be done locally and/or in any common CI "runner" (GitHub Actions, Jenkins, GitLab CI/CD, etc.)
 
@@ -134,9 +148,12 @@ $ tbrocks.wrapped add67 123
 
   - `syncz` supports multiple OSes and architectures
 
+    - It is assumed you have already installed `syncz` somewhere accessible; if needed see [install syncz](https://techdocs.broadcom.com/us/en/ca-mainframe-software/devops/endevor-team-build/1-0/installing/installing-syncz/install-syncz.html)
+
   - ```shell
     syncz task build
     ```
+
 
 ```mermaid
 ---
