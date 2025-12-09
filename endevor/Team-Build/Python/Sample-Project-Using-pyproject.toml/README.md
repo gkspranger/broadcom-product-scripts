@@ -65,6 +65,7 @@ https://techdocs.broadcom.com/us/en/ca-mainframe-software/devops/endevor-team-bu
 ```
 src/                    # custom code
 tests/                  # tests for custom code
+.gitignore              # files for Git to ignore
 .python-version         # Python vesion to build/test against
 ci.sh                   # build script executed on mainframe
 pyproject.toml          # Python project config
@@ -123,6 +124,20 @@ $ tbrocks.wrapped add67 123
 
 #### Build Sequence
 
+- **Workstation:** any machine (local, CI "runner", etc.) used during development
+
+- **Mainframe:** any LPAR developed against
+
+- Task execution can be done locally and/or in any common CI "runner" (GitHub Actions, Jenkins, GitLab CI/CD, etc.)
+
+  - Depends on where you are at in the development cycle
+
+  - `syncz` supports multiple OSes and architectures
+
+  - ```shell
+    syncz task build
+    ```
+
 ```mermaid
 ---
 title: Team Build Task Processing
@@ -138,6 +153,8 @@ sequenceDiagram
   ws->>mf: transfer SRC files<br/>preserve ISO8859-1
   ws->>+mf: execute ci.sh from<br/>SRC base directory
 
+  Note right of mf: All part<br/>of ci.sh
+
   mf->>mf: define Python version
   mf->>mf: setup Python<br/>virtual environment
   mf->>mf: build wheel distribution
@@ -146,7 +163,7 @@ sequenceDiagram
   mf->>mf: create protective wrapper<br/>for project scripts
   mf->>mf: assemble Pax archive
 
-  mf-->>-ws: back sync artifacts<br/>build.log and artifact.pax.Z
+  mf-->>-ws: back sync files<br/>build.log and artifact.pax.Z<br/>to build-out/*
   ws->>ws: display build results
 
   ws->>ws: Profit!

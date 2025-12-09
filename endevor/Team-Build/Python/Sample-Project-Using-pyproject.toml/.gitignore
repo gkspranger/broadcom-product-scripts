@@ -1,9 +1,16 @@
-# Custom
+###################
+## CUSTOM
+###################
 
 build-out/
 .editorconfig
 syncz_vars.yml
 venv/
+
+###################
+## PYTHON
+## https://github.com/github/gitignore/blob/main/Python.gitignore
+###################
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
