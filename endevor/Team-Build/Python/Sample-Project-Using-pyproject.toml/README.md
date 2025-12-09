@@ -142,18 +142,26 @@ $ tbrocks.wrapped add67 123
 
 - **Mainframe:** any LPAR developed against; should mirror LPARs that will be deployed to
 
-- Task execution can be done locally and/or in any common CI "runner" (GitHub Actions, Jenkins, GitLab CI/CD, etc.)
+- **Assumes:**
 
-  - Depends on where you are at in the development cycle
+  - `syncz` has been installed
 
-  - `syncz` supports multiple OSes and architectures
+    - If needed see [install syncz](https://techdocs.broadcom.com/us/en/ca-mainframe-software/devops/endevor-team-build/1-0/installing/installing-syncz/install-syncz.html)
 
-    - It is assumed you have already installed `syncz` somewhere accessible; if needed see [install syncz](https://techdocs.broadcom.com/us/en/ca-mainframe-software/devops/endevor-team-build/1-0/installing/installing-syncz/install-syncz.html)
+    - Task execution can be done locally and/or in any common CI "runner" (GitHub Actions, Jenkins, GitLab CI/CD, etc.)
 
-  - ```shell
-    syncz task build
-    ```
+      - Depends on where you are at in the development cycle
 
+      - `syncz` supports multiple OSes and architectures
+
+  - A `syncz_vars.yml` has been properly configured
+
+  - Test connection by executing: `$ syncz ssh "hostname; date"`
+
+```shell
+# the command that will be ran
+syncz task build
+```
 
 ```mermaid
 ---
