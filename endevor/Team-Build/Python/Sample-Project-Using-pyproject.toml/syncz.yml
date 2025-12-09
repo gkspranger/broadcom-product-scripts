@@ -8,6 +8,7 @@ keyfile: ((.ssh_keyfile))   # required
 # configs of files to sync from workstation to mainframe
 sync:
   # ID of project files requiring ISO8859-1 to IBM-1047 conversion
+  # USS expects (does best with) shell scripts to be encoded with IBM-1047
   - id: ci
     remote: ((.remote_home))/tbrocks
     ignore:
@@ -16,9 +17,10 @@ sync:
       - "!.python-version"  # allow Python version declaration
 
   # ID of project files requiring ISO8859-1 preservation
+  # Python does best with source code that has been encoded with ISO8859-1
   - id: src
     remote: ((.remote_home))/tbrocks
-    remoteencoding: ISO8859-1
+    remoteencoding: ISO8859-1   # target encoding
     ignore:
       - "*"                 # ignore everything
       - "!pyproject.toml"   # allow project configuration file
@@ -32,7 +34,7 @@ sync:
 # configs of files to sync from mainframe to workstation
 backsync:
   # ID of project files to retrieve
-  - id: ci
+  - id: arts
     local: build-out  # local directory to write to
     remote: ((.remote_home))/tbrocks/build-out  # remote directory to evaluate for retrieval
     binfiles:
@@ -57,14 +59,11 @@ tasks:
       # 3) execute build script
       # 4) retrieve and output CI results (*.log, *.pax.Z)
       - localcmd: |
-          syncz --id-match "ci|src" \
+          syncz --id-match "^(ci|src|arts)" \
           --ignore-host-key-check \
-          -a "src::export PIP_FIND_LINKS=((.remote_pypi)) && ./ci.sh build \&> build-out/build.log"
-          cat build-out/build.log
-
-  - name: test
-    actions:
-      - localcmd: |
-          syncz --id-match "ci|src" \
-          --ignore-host-key-check \
-          --no-back-sync --watch
+          -a """\
+          src::\
+          export PIP_FIND_LINKS=((.remote_pypi)) && \
+          ./ci.sh build \&> build-out/build.log
+          """
+          cat build-out/build.log && grep -q "buildfinishedsuccessfully" build-out/build.log || exit 1

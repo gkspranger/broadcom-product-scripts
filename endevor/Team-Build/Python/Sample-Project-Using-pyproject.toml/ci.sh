@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eu
+
 # convert declared Python version (3.12.10) to formatted version (v3r12)
 __PYTHON_VERSION=$(cat .python-version | xargs)
 __MAJOR_MINOR="${__PYTHON_VERSION%.*}"
@@ -135,6 +137,7 @@ case "$1" in
     install
     protect
     assemble
+    echo "buildfinishedsuccessfully"
     ;;
   *)
     echo "Unknown command: $1"

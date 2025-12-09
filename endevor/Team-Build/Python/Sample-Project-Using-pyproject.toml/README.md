@@ -136,7 +136,7 @@ $ tbrocks.wrapped add67 123
 
     - can also be defined with environment variable `PIP_FIND_LINKS=/path/to/wheel/files`
 
-#### Build Sequence
+#### Team Build `syncz` Details
 
 - **Workstation:** any machine (local, CI "runner", etc.) used during development
 
@@ -157,6 +157,12 @@ $ tbrocks.wrapped add67 123
   - A `syncz_vars.yml` has been properly configured
 
   - Test connection by executing: `$ syncz ssh "hostname; date"`
+
+- We have attempted to fully document what each line of the `syncz.yml` and `syncz_vars.example.yml` configurations represent
+
+  - We strongly encourage you to read the comments in both files
+
+  - If anything is unclear and/or wrong, please let us know and we will do our best to adjust
 
 ```shell
 # the command that will be ran
