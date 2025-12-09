@@ -87,9 +87,9 @@ install() {
   $__PYTHON_BINARY -m pip install dist/*.whl -t build-out/artifact
 }
 
-# assemble and publish artifacts
-publish() {
-  header "publish project"
+# assemble artifacts
+assemble() {
+  header "assemble project"
 
   # create artifact to be published
   cd build-out/artifact
@@ -134,7 +134,7 @@ case "$1" in
     test
     install
     protect
-    publish
+    assemble
     ;;
   *)
     echo "Unknown command: $1"
