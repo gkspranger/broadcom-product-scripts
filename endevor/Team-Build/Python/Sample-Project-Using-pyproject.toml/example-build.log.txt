@@ -1,0 +1,158 @@
+$ syncz task build
+connecting user42@sys1.example.com:22...
+[task build] executing (no description)
+connecting user42@sys1.example.com:22...
+
+syncing [ci] [./] to [/z/user42/tbrocks/]
+synchronizing text files
+sync: .python-version
+sync: ci.sh
+creating local archive ... done.
+uploading archive ... done.
+decompressing on z/OS ... done.
+unpax on z/OS ... done.
+text files done.
+
+syncing [src] [./] to [/z/user42/tbrocks/]
+synchronizing text files
+sync: src/tbrocks
+sync: src/tbrocks/__init__.py
+sync: src/tbrocks/core.py
+sync: src
+sync: src/tbrocks/__main__.py
+sync: tox.ini
+sync: src/tbrocks/cli.py
+sync: tests
+sync: README.md
+sync: pyproject.toml
+sync: tests/test_main.py
+creating local archive ... done.
+uploading archive ... done.
+decompressing on z/OS ... done.
+unpax on z/OS ... done.
+text files done.
+
+export PIP_FIND_LINKS=/z/user42/pypi && ./ci.sh build \&> build-out/build.log
+
+exit code: 0
+
+back-syncing [arts] [/z/user42/tbrocks/build-out/] to [build-out/]
+download for [binary] file group
+sync: build-out/artifact.pax.Z
+packaging remote files ... done.
+downloading/unpacking package ... done.
+download for [text] file group
+sync: build-out/build.log
+packaging remote files ... done.
+downloading/unpacking package ... done.
+back sync done!
+IBM Open Enterprise SDK for Python 3.12.10
+pip 25.1.1 from /usr/lpp/IBM/cyp/v3r12/pyz/lib/python3.12/site-packages/pip (python 3.12)
+
+##############################
+## setup project
+##############################
+
+Looking in links: /z/user42/pypi
+Obtaining file:///z/user42/tbrocks
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Installing backend dependencies: started
+  Installing backend dependencies: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Processing /z/user42/pypi/click-8.3.1-py3-none-any.whl (from tbrocks==0.0.1)
+Processing /z/user42/pypi/pytest-9.0.2-py3-none-any.whl (from tbrocks==0.0.1)
+Processing /z/user42/pypi/tox-4.32.0-py3-none-any.whl (from tbrocks==0.0.1)
+Processing /z/user42/pypi/iniconfig-2.3.0-py3-none-any.whl (from pytest<10.0,>=9.0->tbrocks==0.0.1)
+Processing /z/user42/pypi/packaging-25.0-py3-none-any.whl (from pytest<10.0,>=9.0->tbrocks==0.0.1)
+Processing /z/user42/pypi/pluggy-1.6.0-py3-none-any.whl (from pytest<10.0,>=9.0->tbrocks==0.0.1)
+Processing /z/user42/pypi/pygments-2.19.2-py3-none-any.whl (from pytest<10.0,>=9.0->tbrocks==0.0.1)
+Processing /z/user42/pypi/cachetools-6.2.2-py3-none-any.whl (from tox<5.0,>=4.0->tbrocks==0.0.1)
+Processing /z/user42/pypi/chardet-5.2.0-py3-none-any.whl (from tox<5.0,>=4.0->tbrocks==0.0.1)
+Processing /z/user42/pypi/colorama-0.4.6-py2.py3-none-any.whl (from tox<5.0,>=4.0->tbrocks==0.0.1)
+Processing /z/user42/pypi/filelock-3.20.0-py3-none-any.whl (from tox<5.0,>=4.0->tbrocks==0.0.1)
+Processing /z/user42/pypi/platformdirs-4.5.1-py3-none-any.whl (from tox<5.0,>=4.0->tbrocks==0.0.1)
+Processing /z/user42/pypi/pyproject_api-1.10.0-py3-none-any.whl (from tox<5.0,>=4.0->tbrocks==0.0.1)
+Processing /z/user42/pypi/virtualenv-20.35.4-py3-none-any.whl (from tox<5.0,>=4.0->tbrocks==0.0.1)
+Processing /z/user42/pypi/distlib-0.4.0-py2.py3-none-any.whl (from virtualenv>=20.34->tox<5.0,>=4.0->tbrocks==0.0.1)
+Building wheels for collected packages: tbrocks
+  Building editable for tbrocks (pyproject.toml): started
+  Building editable for tbrocks (pyproject.toml): finished with status 'done'
+  Created wheel for tbrocks: filename=tbrocks-0.0.1-py3-none-any.whl size=4470 sha256=b42a7d569096ea1fa22dc1c3de8b41de14d6792f93ade26e0ca2d5b11db5b314
+  Stored in directory: /SYS1/tmp/pip-ephem-wheel-cache-qsqywzjy/wheels/f4/47/19/a86f0b900813cd6ee940b6adf57016093dfd4fd50915ff2679
+Successfully built tbrocks
+Installing collected packages: distlib, pygments, pluggy, platformdirs, packaging, iniconfig, filelock, colorama, click, chardet, cachetools, virtualenv, tbrocks, pytest, pyproject-api, tox
+
+Successfully installed cachetools-6.2.2 chardet-5.2.0 click-8.3.1 colorama-0.4.6 distlib-0.4.0 filelock-3.20.0 iniconfig-2.3.0 packaging-25.0 platformdirs-4.5.1 pluggy-1.6.0 pygments-2.19.2 pyproject-api-1.10.0 pytest-9.0.2 tbrocks-0.0.1 tox-4.32.0 virtualenv-20.35.4
+
+##############################
+## build project
+##############################
+
+Looking in links: /z/user42/pypi
+Processing /z/user42/pypi/build-1.3.0-py3-none-any.whl
+Requirement already satisfied: packaging>=19.1 in ./.venv/lib/python3.12/site-packages (from build) (25.0)
+Processing /z/user42/pypi/pyproject_hooks-1.2.0-py3-none-any.whl (from build)
+Installing collected packages: pyproject_hooks, build
+
+Successfully installed build-1.3.0 pyproject_hooks-1.2.0
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - hatchling
+* Getting build dependencies for wheel...
+* Building wheel...
+Successfully built tbrocks-0.0.1-py3-none-any.whl
+
+##############################
+## test project
+##############################
+
+py: install_deps> python -I -m pip install pytest
+.pkg: install_requires> python -I -m pip install hatchling
+.pkg: _optional_hooks> python /z/user42/tbrocks/.venv/lib/python3.12/site-packages/pyproject_api/_backend.py True hatchling.build
+.pkg: get_requires_for_build_sdist> python /z/user42/tbrocks/.venv/lib/python3.12/site-packages/pyproject_api/_backend.py True hatchling.build
+.pkg: build_sdist> python /z/user42/tbrocks/.venv/lib/python3.12/site-packages/pyproject_api/_backend.py True hatchling.build
+py: install_package_deps> python -I -m pip install 'click<9.0,>=8.0'
+py: install_package> python -I -m pip install --force-reinstall --no-deps /z/user42/tbrocks/.tox/.tmp/package/1/tbrocks-0.0.1.tar.gz
+py: commands[0]> pytest
+============================= test session starts ==============================
+platform zos -- Python 3.12.10, pytest-9.0.2, pluggy-1.6.0
+cachedir: .tox/py/.pytest_cache
+rootdir: /z/user42/tbrocks
+configfile: pyproject.toml
+collected 1 item
+
+tests/test_main.py .                                                     [100%]
+
+============================== 1 passed in 0.02s ===============================
+.pkg: _exit> python /z/user42/tbrocks/.venv/lib/python3.12/site-packages/pyproject_api/_backend.py True hatchling.build
+  py: OK (22.39=setup[21.86]+cmd[0.53] seconds)
+  congratulations :) (22.50 seconds)
+
+##############################
+## install project
+##############################
+
+Looking in links: /z/user42/pypi
+Processing ./dist/tbrocks-0.0.1-py3-none-any.whl
+Processing /z/user42/pypi/click-8.3.1-py3-none-any.whl (from tbrocks==0.0.1)
+Installing collected packages: click, tbrocks
+
+Successfully installed click-8.3.1 tbrocks-0.0.1
+
+##############################
+## protect project
+##############################
+
+
+##############################
+## assemble project
+##############################
+
+buildfinishedsuccessfully
+[task build] success (no description)
