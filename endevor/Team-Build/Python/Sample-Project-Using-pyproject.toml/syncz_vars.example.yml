@@ -2,7 +2,7 @@
 
 # copy/paste this file to syncz_vars.yml
 # update with valid values
-# NEVER commit to git, which is why added to .gitignore
+# NEVER commit to git, which is why it has been added to .gitignore
 
 remote_home: <path-to-dir>    # /z/user42
 remote_host: <hostname>       # sys1.example.com

@@ -74,6 +74,49 @@ syncz.yml               # Team Build syncz config
 tox.ini                 # test environment config
 ```
 
+#### Managing the Python Version
+
+- We are trying to solve for: 1) being able to manage the Python version locally (so I can develop against it), 2) being able to declare which version of Python to use on the mainframe
+
+- We will use `pyenv` to manage the Python version locally
+
+  - https://github.com/pyenv/pyenv
+
+  - Allows you to install multiple versions of Python locally
+
+  - Allows you to define which version of Python should be used for your project via a `.python-version` file
+
+  ```shell
+  3.12.10
+  ```
+
+- LPAR has multiple versions of Python installed
+
+  - Sysprog has decided to install on USS using the standard major/minor format and paths
+
+    - `/usr/lpp/IBM/cyp/v3r12/pyz` == 3.12
+
+- We need to account for this discrepancy in our CI build script that will happen on the LPAR
+
+```shell
+# need to convert 3.12.10 to v3r12
+
+# read the pyenv declared version
+__PYTHON_VERSION=$(cat .python-version | xargs)
+# drop the micro version (.10)
+__MAJOR_MINOR="${__PYTHON_VERSION%.*}"
+# define the formatted version
+__FORMATTED_VERSION="v${__MAJOR_MINOR/./r}"
+
+# use IBM Python root path and formatted version to define PYTHONHOME
+__PYTHON_ROOT="/usr/lpp/IBM/cyp"
+PYTHONHOME="$__PYTHON_ROOT/$__FORMATTED_VERSION/pyz"
+
+# use PYTHONHOME to update PATH and LIBPATH paths
+export PATH="$PYTHONHOME/bin:$PATH"
+export LIBPATH="$PYTHONHOME/lib:$LIBPATH"
+```
+
 #### The Code
 
 - Simple CLI that has 2 subcommands
